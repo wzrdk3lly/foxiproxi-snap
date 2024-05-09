@@ -1,4 +1,4 @@
-import type { OnTransactionHandler, OnSignatureHandler,OnUserInputHandler, Transaction,   } from '@metamask/snaps-sdk';
+import type { OnTransactionHandler, OnSignatureHandler,OnUserInputHandler, Transaction,OnRpcRequestHandler   } from '@metamask/snaps-sdk';
 import { panel,heading, text, copyable, SeverityLevel, button , input, form, ButtonType, divider, UserInputEventType, ManageStateOperation} from '@metamask/snaps-sdk';
 import { getInsightContent } from './ui';
 
@@ -103,6 +103,28 @@ export const onUserInput: OnUserInputHandler = async ({ id, event }) => {
 // };
 
 
+async function getDataForReplay() {
+  return {data:1, type: "transaction"}
+  // TODO: handle the case when it's not there
+  // TODO: figure out what permissions are needed for storage
+  const persistedData = await snap.request({
+    method: "snap_manageState",
+    params: { operation: "get" },
+  });
+  return persistedData;
+}
 
 
+export const onRpcRequest: OnRpcRequestHandler = async ({
+  origin,
+  request,
+}) => {
+  switch (request.method) {
+    case "getReplay":
+      return await getDataForReplay();
+
+    default:
+      throw new Error("Method not found.");
+  }
+};
 
