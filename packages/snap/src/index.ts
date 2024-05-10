@@ -40,16 +40,16 @@ export const onUserInput: OnUserInputHandler = async ({ id, event }) => {
   
  if (event.type === UserInputEventType.FormSubmitEvent && event.name === "modify-rpc-request"){
  //TODO - modify the transaction value with the form input. Stuck figuring out how to grab an input from
-  let modifedTx:Transaction = {...persistedTxData }
+  let modifiedTx:Transaction = {...persistedTxData }
 
   if(event.value["to-address-modification"]){
-    modifedTx.to = event.value["to-address-modification"]
+    modifiedTx.to = event.value["to-address-modification"]
   }
   if(event.value["value-modification"]){
-    modifedTx.value = event.value["value-modification"]
+    modifiedTx.value = event.value["value-modification"]
   }
   if(event.value["calldata-modification"]){
-    modifedTx.data = event.value["calldata-modification"]
+    modifiedTx.data = event.value["calldata-modification"]
   }
   // event.value["to-address-modification"] -> string
   // event.value["value-modification"] -> string 
@@ -59,7 +59,7 @@ export const onUserInput: OnUserInputHandler = async ({ id, event }) => {
     method: 'snap_manageState',
     params: {
       operation: ManageStateOperation.UpdateState,
-      newState: { data: modifedTx, type: "transaction" },
+      newState: { modifiedTx }, //Modified to follow api format
     },
   });
 
@@ -70,10 +70,8 @@ export const onUserInput: OnUserInputHandler = async ({ id, event }) => {
       id,
       ui: panel([
         heading('Interactive UI Example Snap'),
-        text('The submitted modificacitons are:'),
-        text(`${JSON.stringify(event.value)}`),
-        text('The modifiied tx is:'),
-        text(`${JSON.stringify(modifedTx)}`)
+        text('The modified tx :'),
+        text(`${JSON.stringify(modifiedTx)}`)
       ]),
     },
   });
@@ -104,7 +102,6 @@ export const onUserInput: OnUserInputHandler = async ({ id, event }) => {
 
 
 async function getDataForReplay() {
-  return {data:1, type: "transaction"}
   // TODO: handle the case when it's not there
   // TODO: figure out what permissions are needed for storage
   const persistedData = await snap.request({
