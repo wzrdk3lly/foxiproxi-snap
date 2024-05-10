@@ -17,12 +17,12 @@ P.request({
       return P.request({
         method: 'wallet_requestSnaps',
         params: {
-          // Assuming the Snap is published to npm using the package name "hello-snap".
           [snapId]: {},
         },
       });
     }
   })
+
   .then(() =>
     P.request({
       method: 'wallet_invokeSnap',
@@ -35,8 +35,16 @@ P.request({
     }),
   )
   .then((response) => {
-    console.log(response);
-    if (response.type === 'transaction') {
+    // filter for responses with transaction data
+    if (response.modifiedTx) {
       // TODO: run the transaction
+      console.log(
+        'sending modified transaction to MetaMask',
+        response.modifiedTx,
+      );
+      P.request({
+        method: 'eth_sendTransaction',
+        params: [response.modifiedTx],
+      });
     }
   });
