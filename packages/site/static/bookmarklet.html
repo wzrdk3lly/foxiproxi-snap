@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      html,body,div { margin: 0; padding: 0; font: normal 16px/24px Helvetica Neue, Helvetica, sans-serif; color: #333; }
+      #main { max-width: 630px; margin: 3em auto; }
+      .bookmarklet { display: inline-block; padding: .5em 1em; color: #fff; background: #50dcf3; border-radius: 4px; text-decoration: none; }
+      a { color: #50dcf3; }
+      .dim { color: #999; }
+    </style>
+  </head>
+  <body>
+    <div id="main">
+      <h1>Bookmarklet</h1>
+      <p>
+        Drag this button to your bookmarks bar to save it as a bookmarklet:
+      </p>
+      <p>
+        <a class="bookmarklet" href="javascript:(function()%7Bconst%20snapId%3D%22local%3Ahttp%3A%2F%2Flocalhost%3A8080%22%2CP%3Dwindow.ethereum%3BP.request(%7Bmethod%3A%22wallet_getSnaps%22%7D).then((e%3D%3E%7Bconsole.log(%7Bsnaps%3Ae%7D)%3Bconst%20t%3DObject.keys(e).filter(((%5Be%2Ct%5D)%3D%3Et.enabled)).map(((%5Be%2Ct%5D)%3D%3Ee))%3Bif(!t.includes(snapId))return%20console.log(%60Snap%20%24%7BsnapId%7D%20not%20found%60)%2CP.request(%7Bmethod%3A%22wallet_requestSnaps%22%2Cparams%3A%7B%5BsnapId%5D%3A%7B%7D%7D%7D)%7D)).then((()%3D%3EP.request(%7Bmethod%3A%22wallet_invokeSnap%22%2Cparams%3A%7BsnapId%3AsnapId%2Crequest%3A%7Bmethod%3A%22getReplay%22%7D%7D%7D))).then((e%3D%3E%7Be.modifiedTx%26%26(console.log(%22sending%20modified%20transaction%20to%20MetaMask%22%2Ce.modifiedTx)%2CP.request(%7Bmethod%3A%22eth_sendTransaction%22%2Cparams%3A%5Be.modifiedTx%5D%7D))%7D))%3B%7D)()">Bookmarklet</a>
+      </p>
+      
+      <p class="dim">This page was created with the <a href="https://github.com/mrcoles/bookmarklet">bookmarklet</a> npm library.</p>
+    </div>
+  </body>
+</html>

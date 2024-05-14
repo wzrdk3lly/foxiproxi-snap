@@ -117,10 +117,11 @@ const Index = () => {
   return (
     <Container>
       <Heading>
-        Welcome to <Span>template-snap</Span>
+        Welcome to <Span>foxiproxi</Span>
       </Heading>
       <Subtitle>
-        Get started by editing <code>src/index.ts</code>
+        Install the accompanying bookmarklet:
+        <a href="./bookmarklet.html">Install Bookmarklet</a>
       </Subtitle>
       <CardContainer>
         {error && (
